@@ -1,5 +1,7 @@
 package com.dianatuman.practicum.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public class Post {
@@ -10,6 +12,7 @@ public class Post {
     private int likesCount;
     private List<Comment> comments;
     private List<String> tags;
+    private MultipartFile image;
 
     public Post(Long id, String title, String text, int likesCount, List<Comment> comments, List<String> tags) {
         this.id = id;
