@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/posts")
 public class FeedController {
 
-    private final PostService postService;
+//    private final PostService postService;
 
-    public FeedController(PostService postService) {
-        this.postService = postService;
-    }
+//    public FeedController(PostService postService) {
+//        this.postService = postService;
+//    }
 
 
     @GetMapping
@@ -35,7 +35,9 @@ public class FeedController {
         //            				"pageSize" - максимальное число постов на странице (по умолчанию, 10)
         //            				"hasNext" - можно ли пролистнуть вперед
         //            				"hasPrevious" - можно ли пролистнуть назад
-        model.addAttribute("posts", postService.getPosts());
+        model.getAttribute("search");
+        model.getAttribute("paging");
+//        model.addAttribute("posts", postService.getPosts());
         return "posts";
     }
 

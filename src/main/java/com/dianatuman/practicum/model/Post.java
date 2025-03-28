@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Post {
 
-    private Long id;
+    private long id;
     private String title;
     private String text;
     private int likesCount;
@@ -14,7 +14,7 @@ public class Post {
     private List<String> tags;
     private MultipartFile image;
 
-    public Post(Long id, String title, String text, int likesCount, List<Comment> comments, List<String> tags) {
+    public Post(long id, String title, String text, int likesCount, List<Comment> comments, List<String> tags) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -23,7 +23,7 @@ public class Post {
         this.tags = tags;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

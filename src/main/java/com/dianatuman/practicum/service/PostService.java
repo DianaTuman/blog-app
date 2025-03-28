@@ -10,23 +10,23 @@ public class PostService {
         return null;
     }
 
-    public Post getPost(Long id) {
+    public Post getPost(long id) {
         return null;
     }
 
-    public Long addPost(Post newPost) {
-        return null;
+    public long addPost(Post newPost) {
+        return 0;
     }
 
-    public boolean editPost(Long id, Post updatedPost) {
+    public boolean editPost(long id, Post updatedPost) {
         return false;
     }
 
-    public boolean deletePost(Long id) {
+    public boolean deletePost(long id) {
         return false;
     }
 
-    public boolean likePost(Long id, boolean like) {
+    public boolean likePost(long id, boolean like) {
         return false;
     }
 

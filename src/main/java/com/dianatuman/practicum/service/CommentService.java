@@ -2,14 +2,18 @@ package com.dianatuman.practicum.service;
 
 public class CommentService {
 
-    public void addComment(Long postId, String text) {
-    }
-
-    public void editComment(Long postId, Long commentId, String text) {
+    public void getAllCommentsForPost(long postId){
 
     }
 
-    public void deleteComment(Long postId, Long commentId) {
+    public void addComment(long postId, String text) {
+    }
+
+    public void editComment(long postId, long commentId, String text) {
+
+    }
+
+    public void deleteComment(long postId, long commentId) {
 
     }
 }

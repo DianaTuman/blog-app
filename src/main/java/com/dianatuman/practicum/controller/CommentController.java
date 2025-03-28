@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/posts/{id}/comments")
 public class CommentController {
 
-    private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
+//    private final CommentService commentService;
+//
+//    public CommentController(CommentService commentService) {
+//        this.commentService = commentService;
+//    }
 
     @PostMapping
     public String postComment(@PathVariable Long id) {
@@ -24,7 +24,7 @@ public class CommentController {
         //       			"text" - текст комментария
         //       		Возвращает:
         //       			редирект на "/posts/{id}"
-        commentService.addComment(id, "text");
+//        commentService.addComment(id, "text");
         return String.format("redirect:/posts/%s", id);
     }
 
@@ -37,7 +37,7 @@ public class CommentController {
         //       			"text" - текст комментария
         //       		Возвращает:
         //       			редирект на "/posts/{id}"
-        commentService.editComment(id, commentId, "text");
+//        commentService.editComment(id, commentId, "text");
         return String.format("redirect:/posts/%s", id);
     }
 
@@ -49,7 +49,7 @@ public class CommentController {
         //       			"commentId" - идентификатор комментария
         //       		Возвращает:
         //       			редирект на "/posts/{id}"
-        commentService.deleteComment(id, commentId);
+//        commentService.deleteComment(id, commentId);
         return String.format("redirect:/posts/%s", id);
     }
 

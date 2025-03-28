@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/posts/{id}")
 public class PostController {
 
-    private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+//    private final PostService postService;
+//
+//    public PostController(PostService postService) {
+//        this.postService = postService;
+//    }
 
     @GetMapping
     public String postPage(@PathVariable Long id, Model model) {
@@ -25,7 +25,7 @@ public class PostController {
         //       			шаблон "post.html"
         //       			используется модель для заполнения шаблона:
         //       				"post" - модель поста (id, title, text, imagePath, likesCount, comments)
-        model.addAttribute("post", postService.getPost(id));
+//        model.addAttribute("post", postService.getPost(id));
         return "post";
     }
 
@@ -77,7 +77,7 @@ public class PostController {
         //       			"id" - идентификатор поста
         //       		Возвращает:
         //       			редирект на "/posts"
-        postService.deletePost(id);
+//        postService.deletePost(id);
         return "redirect:/posts";
     }
 }
