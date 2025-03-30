@@ -1,7 +1,9 @@
 package com.dianatuman.practicum.controller;
 
+import com.dianatuman.practicum.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -9,18 +11,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/")
 public class HomeController {
 
-    @GetMapping
-    @ResponseBody
-    public String homePage() {
-        // GET "/" - редирект на "/posts"
-        return "redirect:/posts";
+    private final PostService postService;
+
+    public HomeController(PostService postService) {
+        this.postService = postService;
     }
 
+    /**
+     * @return редирект на "/posts"
+     */
+    @GetMapping
+    public String homePage() {
+        return "redirect:./posts";
+    }
+
+
+    /**
+     * @param id - идентификатор поста
+     * @return набор байт картинки поста
+     */
     @GetMapping("/images/{id}")
     @ResponseBody
-    public void getImage() {
-        //GET "/images/{id}" -эндпоин, возвращающий набор байт картинки поста
-        //       		Параметры:
-        //       			"id" - идентификатор поста
+    public byte[] getImage(@PathVariable(name = "id") long id) {
+        return postService.getImage(id);
     }
 }

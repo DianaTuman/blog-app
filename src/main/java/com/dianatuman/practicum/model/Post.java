@@ -2,25 +2,27 @@ package com.dianatuman.practicum.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Post {
 
-    private long id;
+    private final long id;
     private String title;
     private String text;
-    private int likesCount;
+    private final int likesCount;
     private List<Comment> comments;
-    private List<String> tags;
+    private final int commentsSize;
+    private String tags;
     private MultipartFile image;
 
-    public Post(long id, String title, String text, int likesCount, List<Comment> comments, List<String> tags) {
+    public Post(long id, String title, String text, int likesCount, String tags, int commentsSize) {
         this.id = id;
         this.title = title;
         this.text = text;
         this.likesCount = likesCount;
-        this.comments = comments;
         this.tags = tags;
+        this.commentsSize = commentsSize;
     }
 
     public long getId() {
@@ -31,8 +33,24 @@ public class Post {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getTextPreview() {
-        return text.substring(0, 10);
+        return getTextParts()[0];
+    }
+
+    public String[] getTextParts() {
+        return text.split("\n");
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getLikesCount() {
@@ -43,7 +61,52 @@ public class Post {
         return comments;
     }
 
-    public List<String> getTags() {
+    public int getCommentsSize() {
+        if (comments != null) {
+            return comments.size();
+        } else {
+            return commentsSize;
+        }
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public String[] getTags() {
+        return tags.split(" ");
+    }
+
+    public String getTagsAsText() {
         return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public byte[] getImageBytes() {
+        try {
+            return image.getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                '}';
     }
 }

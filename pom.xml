@@ -3,18 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Артефакты вашего проекта: группа, имя и версия -->
     <groupId>com.dianatuman.practicum</groupId>
     <artifactId>blog-app</artifactId>
     <version>0.1</version>
-
-    <!-- Упаковка в .war -->
     <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- Версия JDK-->
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
@@ -36,14 +31,11 @@
     </build>
 
     <dependencies>
-        <!-- Spring Web MVC -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>6.2.1</version>
         </dependency>
-
-        <!-- Servlet API -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
