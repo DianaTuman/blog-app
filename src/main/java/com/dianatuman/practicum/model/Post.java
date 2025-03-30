@@ -1,20 +1,18 @@
 package com.dianatuman.practicum.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class Post {
 
-    private final long id;
+    private long id;
     private String title;
     private String text;
-    private final int likesCount;
+    private int likesCount;
     private List<Comment> comments;
-    private final int commentsSize;
+    private int commentsSize;
     private String tags;
-    private MultipartFile image;
+    private byte[] image;
 
     public Post(long id, String title, String text, int likesCount, String tags, int commentsSize) {
         this.id = id;
@@ -23,6 +21,13 @@ public class Post {
         this.likesCount = likesCount;
         this.tags = tags;
         this.commentsSize = commentsSize;
+    }
+
+    public Post(String title, String text, byte[] image, String tags) {
+        this.title = title;
+        this.text = text;
+        this.tags = Objects.requireNonNullElse(tags, "");
+        this.image = image;
     }
 
     public long getId() {
@@ -85,20 +90,8 @@ public class Post {
         this.tags = tags;
     }
 
-    public MultipartFile getImage() {
+    public byte[] getImage() {
         return image;
-    }
-
-    public byte[] getImageBytes() {
-        try {
-            return image.getBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void setImage(MultipartFile image) {
-        this.image = image;
     }
 
     @Override

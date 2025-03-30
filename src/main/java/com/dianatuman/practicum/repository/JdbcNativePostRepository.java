@@ -3,8 +3,12 @@ package com.dianatuman.practicum.repository;
 import com.dianatuman.practicum.model.Comment;
 import com.dianatuman.practicum.model.Post;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -34,9 +38,22 @@ public class JdbcNativePostRepository implements PostRepository {
 
     @Override
     public long addPost(Post newPost) {
-        jdbcTemplate.update("insert into posts(title, post_text, tags, image) values(?, ?, ?, ?)",
-                newPost.getTitle(), newPost.getText(), newPost.getTagsAsText(), newPost.getImageBytes());
-        return 0;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement("insert into posts(title, post_text, tags, image) values(?, ?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, newPost.getTitle());
+            ps.setString(2, newPost.getText());
+            ps.setString(3, newPost.getTagsAsText());
+            ps.setBytes(4, newPost.getImage());
+            return ps;
+        }, keyHolder);
+        var assignedKey = keyHolder.getKeys().get("id");
+        if (assignedKey == null) {
+            return 0;
+        }
+        return (long) assignedKey;
     }
 
     @Override
@@ -65,9 +82,20 @@ public class JdbcNativePostRepository implements PostRepository {
 
     @Override
     public void editPost(long id, Post updatedPost) {
-        jdbcTemplate.update("update posts " +
-                "set title = ?, post_text = ?, " +
-                "where id = ?", updatedPost.getTitle(), id);
+        //TODO refactor
+        if (updatedPost.getImage().length > 0) {
+            jdbcTemplate.update("update posts " +
+                            "set title = ?, post_text = ?, tags = ?, image = ? " +
+                            "where id = ?",
+                    updatedPost.getTitle(), updatedPost.getText(), updatedPost.getTagsAsText(), updatedPost.getImage(),
+                    id);
+        } else {
+            jdbcTemplate.update("update posts " +
+                            "set title = ?, post_text = ?, tags = ? " +
+                            "where id = ?",
+                    updatedPost.getTitle(), updatedPost.getText(), updatedPost.getTagsAsText(),
+                    id);
+        }
     }
 
     @Override

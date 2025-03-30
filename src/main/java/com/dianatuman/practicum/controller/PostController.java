@@ -2,9 +2,14 @@ package com.dianatuman.practicum.controller;
 
 import com.dianatuman.practicum.model.Post;
 import com.dianatuman.practicum.service.PostService;
+import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/posts/{id}")
@@ -30,7 +35,7 @@ public class PostController {
     }
 
     /**
-     * POST "/posts/{id}/like" - увеличение/уменьшение числа лайков поста
+     * POST "/posts/{id}/like" - эндпоинт увеличение/уменьшение числа лайков поста
      *
      * @param id   - идентификатор поста
      * @param like - если true, то +1 лайк, если "false", то -1 лайк
@@ -56,20 +61,22 @@ public class PostController {
     }
 
 
-    @PostMapping
-    public String edit(@PathVariable(name = "id") long id, @ModelAttribute("post") Post post) {
-        // POST "/posts/{id}" - редактирование поста
-        //       		Принимает:
-        //       			"multipart/form-data"
-        //       		Параметры:
-        //       			"id" - идентификатор поста
-        //       			"title" - название поста
-        //       			"text" - текст поста
-        //       			"image" - файл картинки поста (класс MultipartFile, может быть null - значит, остается прежним)
-        //       			"tags" - список тегов поста (по умолчанию, пустая строка)
-        //       		Возвращает:
-        //       			редирект на отредактированный "/posts/{id}"
-        postService.editPost(id, post);
+    /**
+     * POST "/posts/{id}" - эндпоинт редактирование поста
+     * Принимает:"multipart/form-data"
+     *
+     * @param id    - идентификатор поста
+     * @param title - название поста
+     * @param text  - текст поста
+     * @param image - файл картинки поста (класс MultipartFile, может быть null - значит, остается прежним)
+     * @param tags  - список тегов поста (по умолчанию, пустая строка)
+     * @return редирект на отредактированный "/posts/{id}"
+     */
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String edit(@PathVariable(name = "id") long id, @RequestPart("title") String title, @RequestPart("text") String text,
+                       @RequestPart("image") MultipartFile image, @Nullable @RequestPart("tags") String tags) throws IOException {
+        Post updatedPost = new Post(title, text, image.getBytes(), tags);
+        postService.editPost(id, updatedPost);
         return String.format("redirect:/posts/%s", id);
     }
 
