@@ -118,4 +118,10 @@ public class JdbcNativePostRepository implements PostRepository {
                         "where id ='%s'", id),
                 (rs, rowNum) -> rs.getBytes("image")).getFirst();
     }
+
+    @Override
+    public List<Post> findPostsByTag(String search) {
+        //TODO
+        return List.of();
+    }
 }

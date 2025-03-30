@@ -20,4 +20,5 @@ public interface PostRepository {
 
     byte[] getImage(long id);
 
+    List<Post> findPostsByTag(String search);
 }

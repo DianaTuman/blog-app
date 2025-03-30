@@ -6,13 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/posts")
@@ -31,7 +29,7 @@ public class FeedController {
      *              pageSize - максимальное число постов на странице (по умолчанию, 10)
      *              pageNumber - номер текущей страницы (по умолчанию, 1)
      * @return шаблон "posts.html" используется модель для заполнения шаблона:
-     * "posts" - List<Post> - список постов (id, title, text, imagePath, likesCount, comments)
+     * "posts" - List<Post> - список постов (id, title, text, imagePath, likesCount, commentsSize)
      * "search" - строка поиска (по умолчанию, пустая строка - все посты)
      * "paging":
      * "pageNumber" - номер текущей страницы (по умолчанию, 1)
@@ -40,12 +38,19 @@ public class FeedController {
      * "hasPrevious" - можно ли пролистнуть назад
      */
     @GetMapping
-    public String feedPage(Model model) {
-//        System.out.println(model.getAttribute("search"));
-//        System.out.println(model.getAttribute("pageSize"));
-//        System.out.println(model.getAttribute("pageNumber"));
+    public String feedPage(Model model, @ModelAttribute("search") String search) {
+        List<Post> posts;
+        if (search.isBlank()) {
+            posts = postService.getPosts();
+        } else {
+            posts = postService.getPostsByTag(search);
+        }
+
+//        model.getAttribute("pageSize");
+//        model.getAttribute("pageNumber");
 //        model.getAttribute("paging");
-        model.addAttribute("posts", postService.getPosts());
+
+        model.addAttribute("posts", posts);
         return "posts";
     }
 
