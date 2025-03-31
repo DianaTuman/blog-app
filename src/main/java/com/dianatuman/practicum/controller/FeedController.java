@@ -2,6 +2,7 @@ package com.dianatuman.practicum.controller;
 
 import com.dianatuman.practicum.model.Post;
 import com.dianatuman.practicum.service.PostService;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -25,20 +26,15 @@ public class FeedController {
     /**
      * GET "posts" - список постов на странице ленты постов
      *
-     * @param model search - строка с поиском по тегу поста (по умолчанию, пустая строка - все посты)
-     *              pageSize - максимальное число постов на странице (по умолчанию, 10)
-     *              pageNumber - номер текущей страницы (по умолчанию, 1)
+     * @param model      search - строка с поиском по тегу поста (по умолчанию, пустая строка - все посты)
+     * @param pageSize   - максимальное число постов на странице (по умолчанию, 10)
+     * @param pageNumber - номер текущей страницы (по умолчанию, 1)
      * @return шаблон "posts.html" используется модель для заполнения шаблона:
-     * "posts" - List<Post> - список постов (id, title, text, imagePath, likesCount, commentsSize)
-     * "search" - строка поиска (по умолчанию, пустая строка - все посты)
-     * "paging":
-     * "pageNumber" - номер текущей страницы (по умолчанию, 1)
-     * "pageSize" - максимальное число постов на странице (по умолчанию, 10)
-     * "hasNext" - можно ли пролистнуть вперед
-     * "hasPrevious" - можно ли пролистнуть назад
      */
     @GetMapping
-    public String feedPage(Model model, @ModelAttribute("search") String search) {
+    public String feedPage(Model model, @ModelAttribute("search") String search,
+                           @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                           @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber) {
         List<Post> posts;
         if (search.isBlank()) {
             posts = postService.getPosts();
@@ -46,11 +42,13 @@ public class FeedController {
             posts = postService.getPostsByTag(search);
         }
 
-//        model.getAttribute("pageSize");
-//        model.getAttribute("pageNumber");
-//        model.getAttribute("paging");
+        //Maybe do pagination within DB
+        PagedListHolder<Post> pagedListHolder = new PagedListHolder<>(posts);
+        pagedListHolder.setPageSize(pageSize);
+        pagedListHolder.setPage(pageNumber);
 
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", pagedListHolder.getPageList());
+        model.addAttribute("paging", pagedListHolder);
         return "posts";
     }
 
