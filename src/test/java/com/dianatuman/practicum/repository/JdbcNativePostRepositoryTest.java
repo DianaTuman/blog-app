@@ -2,6 +2,7 @@ package com.dianatuman.practicum.repository;
 
 import com.dianatuman.practicum.configuration.DataSourceConfiguration;
 import com.dianatuman.practicum.model.Post;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,6 +22,14 @@ public class JdbcNativePostRepositoryTest {
 
     @Autowired
     private PostRepository postRepository;
+
+    @BeforeEach
+    void setUp() {
+        jdbcTemplate.execute("DELETE FROM comments");
+        jdbcTemplate.execute("DELETE FROM posts");
+        jdbcTemplate.execute("insert into posts(id, title, post_text) values ('1', 'FIRST POST', 'FIRST TEXT')");
+        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (1, 1, 'FIRST COMMENT')");
+    }
 
     @Test
     void findAll_shouldReturnAllPosts() {

@@ -7,9 +7,9 @@ create table if not exists posts(
   tags varchar(256) not null default '',
   image bytea);
 
---insert into posts(title, post_text) values ('1 Пост', 'текст текст текст');
---insert into posts(title, post_text) values ('2 Пост', 'ТЕКСТ');
---insert into posts(title, post_text) values ('3 Пост', '123546457');
+insert into posts(title, post_text) values ('1 Пост', 'текст текст текст');
+insert into posts(title, post_text) values ('2 Пост', 'ТЕКСТ');
+insert into posts(title, post_text) values ('3 Пост', '123546457');
 
 -- Таблица с комментариями
 create table if not exists comments(

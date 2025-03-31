@@ -105,6 +105,8 @@ public class JdbcNativePostRepository implements PostRepository {
 
     @Override
     public void deletePost(long id) {
+        jdbcTemplate.update("delete from comments " +
+                "where post_id = ?", id);
         jdbcTemplate.update("delete from posts " +
                 "where id = ?", id);
     }
