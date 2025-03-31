@@ -49,16 +49,16 @@ public class JdbcNativePostRepository implements PostRepository {
             ps.setBytes(4, newPost.getImage());
             return ps;
         }, keyHolder);
-        var assignedKey = keyHolder.getKeys().get("id");
-        if (assignedKey == null) {
+        if (keyHolder.getKeys() == null) {
             return 0;
+        } else {
+            return (long) keyHolder.getKeys().get("id");
         }
-        return (long) assignedKey;
     }
 
     @Override
     public Post getPost(long id) {
-        Post post = jdbcTemplate.query(
+        List<Post> query = jdbcTemplate.query(
                 "select id, title, post_text, likes, tags, comments_size from posts " +
                         "left join (select post_id, sum(id) as comments_size from comments group by post_id) " +
                         "on posts.id = post_id " +
@@ -70,14 +70,19 @@ public class JdbcNativePostRepository implements PostRepository {
                         rs.getInt("likes"),
                         rs.getString("tags"),
                         rs.getInt("comments_size")
-                )).getFirst();
-        post.setComments(jdbcTemplate.query(
-                "select id, text from comments " +
-                        "where post_id = " + id,
-                (rs, rowNum) -> new Comment(
-                        rs.getLong("id"),
-                        rs.getString("text"))));
-        return post;
+                ));
+        if (query.isEmpty()) {
+            return null;
+        } else {
+            Post post = query.getFirst();
+            post.setComments(jdbcTemplate.query(
+                    "select id, text from comments " +
+                            "where post_id = " + id,
+                    (rs, rowNum) -> new Comment(
+                            rs.getLong("id"),
+                            rs.getString("text"))));
+            return post;
+        }
     }
 
     @Override

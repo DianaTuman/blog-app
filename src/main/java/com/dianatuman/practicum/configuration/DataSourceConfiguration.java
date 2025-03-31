@@ -16,10 +16,8 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfiguration {
 
-    // Настройка DataSource — компонент, отвечающий за соединение с базой данных
     @Bean
     public DataSource dataSource(
-            // Настройки соединения возьмём из Environment
             @Value("${spring.datasource.url}") String url,
             @Value("${spring.datasource.username}") String username,
             @Value("${spring.datasource.password}") String password
@@ -33,19 +31,17 @@ public class DataSourceConfiguration {
         return dataSource;
     }
 
-    // JdbcTemplate — компонент для выполнения запросов
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
-    // После инициализации контекста выполняем наполнение схемы базы данных
     @EventListener
     public void populate(ContextRefreshedEvent event) {
         DataSource dataSource = event.getApplicationContext().getBean(DataSource.class);
 
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("schema.sql")); // Файл должен находиться в ресурсах
+        populator.addScript(new ClassPathResource("schema.sql"));
         populator.execute(dataSource);
     }
 

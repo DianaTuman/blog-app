@@ -1,7 +1,12 @@
 package com.dianatuman.practicum.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 @Repository
 public class JdbcNativeCommentRepository implements CommentRepository {
@@ -13,9 +18,21 @@ public class JdbcNativeCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void addComment(long postId, String text) {
-        jdbcTemplate.update("insert into comments(post_id, text) values(?, ?)",
-                postId, text);
+    public long addComment(long postId, String text) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement("insert into comments(post_id, text) values(?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, postId);
+            ps.setString(2, text);
+            return ps;
+        }, keyHolder);
+        if (keyHolder.getKeys() == null) {
+            return 0;
+        } else {
+            return (long) keyHolder.getKeys().get("id");
+        }
     }
 
     @Override

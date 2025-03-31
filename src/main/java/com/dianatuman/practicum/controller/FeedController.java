@@ -26,13 +26,14 @@ public class FeedController {
     /**
      * GET "posts" - список постов на странице ленты постов
      *
-     * @param model      search - строка с поиском по тегу поста (по умолчанию, пустая строка - все посты)
+     * @param model      - "posts" - List<Post> - список постов (id, title, text, imagePath, likesCount, comments)
+     * @param search     - строка с поиском по тегу поста (по умолчанию, пустая строка - все посты)
      * @param pageSize   - максимальное число постов на странице (по умолчанию, 10)
      * @param pageNumber - номер текущей страницы (по умолчанию, 1)
      * @return шаблон "posts.html" используется модель для заполнения шаблона:
      */
     @GetMapping
-    public String feedPage(Model model, @ModelAttribute("search") String search,
+    public String feedPage(Model model, @RequestParam("search") String search,
                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                            @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber) {
         List<Post> posts;
@@ -42,7 +43,7 @@ public class FeedController {
             posts = postService.getPostsByTag(search);
         }
 
-        //Maybe do pagination within DB
+        //Maybe move pagination to DB
         PagedListHolder<Post> pagedListHolder = new PagedListHolder<>(posts);
         pagedListHolder.setPageSize(pageSize);
         pagedListHolder.setPage(pageNumber);

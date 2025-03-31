@@ -2,7 +2,7 @@ package com.dianatuman.practicum.repository;
 
 public interface CommentRepository {
 
-    void addComment(long postId, String text);
+    long addComment(long postId, String text);
 
     void editComment(long commentId, String text);
 

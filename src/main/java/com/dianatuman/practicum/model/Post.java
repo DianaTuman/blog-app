@@ -1,5 +1,7 @@
 package com.dianatuman.practicum.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +23,7 @@ public class Post {
         this.likesCount = likesCount;
         this.tags = tags;
         this.commentsSize = commentsSize;
+        this.comments = new ArrayList<>();
     }
 
     public Post(String title, String text, byte[] image, String tags) {
@@ -100,6 +103,24 @@ public class Post {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
+                ", likesCount=" + likesCount +
+                ", comments=" + comments +
+                ", tags='" + tags + '\'' +
+                ", image=" + Arrays.toString(image) +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id == post.id && likesCount == post.likesCount && Objects.equals(title, post.title)
+                && Objects.equals(text, post.text) && Objects.equals(comments, post.comments)
+                && Objects.equals(tags, post.tags) && Objects.deepEquals(image, post.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, text, likesCount, comments, tags, Arrays.hashCode(image));
     }
 }
