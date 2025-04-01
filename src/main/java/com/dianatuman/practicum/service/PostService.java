@@ -44,7 +44,9 @@ public class PostService {
     }
 
     public List<Post> getPostsByTag(String search) {
-        return getPosts().stream().filter(p -> p.getTagsAsText().contains(search)).toList();
+        return getPosts().stream().filter(p -> p.getTagsAsText().toLowerCase()
+                .contains(search.toLowerCase())).toList();
+//        TODO
 //        it's most likely faster to do filtering in DB on large data
 //        return postRepository.findPostsByTag(search);
     }

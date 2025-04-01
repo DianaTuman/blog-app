@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <tomcat.server></tomcat.server>
     </properties>
 
     <build>
@@ -25,6 +26,9 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>3.4.0</version>
+                    <configuration>
+                        <outputDirectory>${tomcat.server}</outputDirectory>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
