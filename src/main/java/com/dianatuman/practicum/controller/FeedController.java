@@ -33,7 +33,7 @@ public class FeedController {
      * @return шаблон "posts.html" используется модель для заполнения шаблона:
      */
     @GetMapping
-    public String feedPage(Model model, @RequestParam("search") String search,
+    public String feedPage(Model model, @RequestParam(value = "search", defaultValue = "") String search,
                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                            @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber) {
         List<Post> posts;

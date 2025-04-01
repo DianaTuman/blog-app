@@ -2,6 +2,7 @@ package com.dianatuman.practicum.controller;
 
 import com.dianatuman.practicum.configuration.DataSourceConfiguration;
 import com.dianatuman.practicum.configuration.WebConfiguration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,11 @@ public class CommentControllerTest {
         mockMvc.perform(post("/posts/1/comments/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/posts/1"));
+    }
+
+    @AfterEach
+    void cleanUp() {
+        jdbcTemplate.execute("DELETE FROM comments");
+        jdbcTemplate.execute("DELETE FROM posts");
     }
 }

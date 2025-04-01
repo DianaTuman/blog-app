@@ -2,6 +2,7 @@ package com.dianatuman.practicum.repository;
 
 import com.dianatuman.practicum.configuration.DataSourceConfiguration;
 import com.dianatuman.practicum.model.Post;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class JdbcNativePostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
 
+    private final long id = 1;
+
     @BeforeEach
     void setUp() {
         jdbcTemplate.execute("DELETE FROM comments");
@@ -33,7 +36,7 @@ public class JdbcNativePostRepositoryTest {
 
     @Test
     void findAll_shouldReturnAllPosts() {
-        var post = postRepository.getPost(addNewPost());
+        var post = postRepository.getPost(id);
         List<Post> posts = postRepository.findAll();
 
         assertNotNull(posts);
@@ -56,7 +59,6 @@ public class JdbcNativePostRepositoryTest {
 
     @Test
     void edit_shouldUpdatePostInDatabase() {
-        long id = addNewPost();
         postRepository.editPost(id, new Post("EDITED_POST", "EDITED_TEXT", new byte[0], "edited tags"));
 
         Post editedPost = postRepository.getPost(id);
@@ -68,7 +70,6 @@ public class JdbcNativePostRepositoryTest {
 
     @Test
     void delete_shouldDeletePostInDatabase() {
-        long id = addNewPost();
         postRepository.deletePost(id);
 
         Post deletedPost = postRepository.getPost(id);
@@ -77,7 +78,6 @@ public class JdbcNativePostRepositoryTest {
 
     @Test
     void get_shouldGetPostInDatabase() {
-        long id = addNewPost();
         Post post = postRepository.getPost(id);
 
         var posts = postRepository.findAll();
@@ -91,7 +91,6 @@ public class JdbcNativePostRepositoryTest {
 
     @Test
     void updateLike_shouldUpdatePostLikesCountInDatabase() {
-        long id = addNewPost();
         assertEquals(0, postRepository.getPost(id).getLikesCount());
 
         postRepository.updateLikes(id, 1);
@@ -104,7 +103,9 @@ public class JdbcNativePostRepositoryTest {
         assertEquals(99, postRepository.getPost(id).getLikesCount());
     }
 
-    private long addNewPost() {
-        return postRepository.addPost(new Post("TEST_POST", "TEXT", new byte[0], "test test"));
+    @AfterEach
+    void cleanUp() {
+        jdbcTemplate.execute("DELETE FROM comments");
+        jdbcTemplate.execute("DELETE FROM posts");
     }
 }

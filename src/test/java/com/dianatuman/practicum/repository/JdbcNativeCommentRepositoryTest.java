@@ -2,6 +2,7 @@ package com.dianatuman.practicum.repository;
 
 import com.dianatuman.practicum.configuration.DataSourceConfiguration;
 import com.dianatuman.practicum.model.Comment;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,12 @@ public class JdbcNativeCommentRepositoryTest {
                 (rs, rowNum) -> new Comment(
                         rs.getLong("id"),
                         rs.getString("text")));
+    }
+
+    @AfterEach
+    void cleanUp() {
+        jdbcTemplate.execute("DELETE FROM comments");
+        jdbcTemplate.execute("DELETE FROM posts");
     }
 
 }

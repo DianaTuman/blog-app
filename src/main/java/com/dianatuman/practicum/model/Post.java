@@ -104,7 +104,6 @@ public class Post {
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 ", likesCount=" + likesCount +
-                ", comments=" + comments +
                 ", tags='" + tags + '\'' +
                 ", image=" + Arrays.toString(image) +
                 '}';
@@ -115,8 +114,7 @@ public class Post {
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
         return id == post.id && likesCount == post.likesCount && Objects.equals(title, post.title)
-                && Objects.equals(text, post.text) && Objects.equals(comments, post.comments)
-                && Objects.equals(tags, post.tags) && Objects.deepEquals(image, post.image);
+                && Objects.equals(text, post.text) && Objects.equals(tags, post.tags) && Objects.deepEquals(image, post.image);
     }
 
     @Override
