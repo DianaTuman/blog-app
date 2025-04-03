@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <title>Блог</title>
+    <style>
+        p.clip {
+         overflow: hidden;
+         display: -webkit-box;
+         -webkit-line-clamp: 3;
+         line-clamp: 3;
+         -webkit-box-orient: vertical;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,7 +37,7 @@
             <p>
                 <img height="300" th:src="${'http://localhost:8080/blog-app/images/'+post.getId()}"></img>
             </p>
-            <p th:text="${post.getTextPreview()}"></p>
+            <p class="clip" th:text="${post.getText()}"></p>
             <p>
                 <span th:text="${'&#x1F44D; '+post.getLikesCount()}"></span>
                 <span th:text="${'&#x2709; '+post.getCommentsSize()}"></span>

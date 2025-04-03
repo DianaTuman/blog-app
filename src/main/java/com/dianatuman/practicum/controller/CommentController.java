@@ -57,5 +57,4 @@ public class CommentController {
         commentService.deleteComment(commentId);
         return String.format("redirect:/posts/%s", id);
     }
-
 }

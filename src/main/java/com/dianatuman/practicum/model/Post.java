@@ -1,6 +1,5 @@
 package com.dianatuman.practicum.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +22,6 @@ public class Post {
         this.likesCount = likesCount;
         this.tags = tags;
         this.commentsSize = commentsSize;
-        this.comments = new ArrayList<>();
     }
 
     public Post(String title, String text, byte[] image, String tags) {

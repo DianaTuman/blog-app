@@ -23,9 +23,9 @@ public class JdbcNativePostRepository implements PostRepository {
     @Override
     public List<Post> findAll() {
         return jdbcTemplate.query(
-                "select id, title, post_text, likes, tags, comments_size from posts " +
-                        "left join (select post_id, count(id) as comments_size from comments group by post_id) " +
-                        "on posts.id = post_id",
+                "select id, title, post_text, likes, tags, comment_count.comments_size from posts " +
+                        "left join (select post_id, count(id) as comments_size from comments group by post_id) comment_count " +
+                        "on posts.id = comment_count.post_id",
                 (rs, rowNum) -> new Post(
                         rs.getLong("id"),
                         rs.getString("title"),
@@ -59,17 +59,14 @@ public class JdbcNativePostRepository implements PostRepository {
     @Override
     public Post getPost(long id) {
         List<Post> query = jdbcTemplate.query(
-                "select id, title, post_text, likes, tags, comments_size from posts " +
-                        "left join (select post_id, sum(id) as comments_size from comments group by post_id) " +
-                        "on posts.id = post_id " +
+                "select id, title, post_text, likes, tags from posts " +
                         "where id = " + id,
                 (rs, rowNum) -> new Post(
                         rs.getLong("id"),
                         rs.getString("title"),
                         rs.getString("post_text"),
                         rs.getInt("likes"),
-                        rs.getString("tags"),
-                        rs.getInt("comments_size")
+                        rs.getString("tags"), 0
                 ));
         if (query.isEmpty()) {
             return null;
