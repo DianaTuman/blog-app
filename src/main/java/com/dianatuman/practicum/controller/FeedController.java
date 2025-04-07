@@ -43,7 +43,6 @@ public class FeedController {
             posts = postService.getPostsByTag(search);
         }
 
-        //TODO move pagination to DB
         PagedListHolder<Post> pagedListHolder = new PagedListHolder<>(posts);
         pagedListHolder.setPageSize(pageSize);
         pagedListHolder.setPage(pageNumber);

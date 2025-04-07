@@ -10,8 +10,7 @@ public class Post {
     private String title;
     private String text;
     private int likesCount;
-    private List<Comment> comments;
-    private int commentsSize;
+    private Comment[] comments;
     private String tags;
     private byte[] image;
 
@@ -21,7 +20,7 @@ public class Post {
         this.text = text;
         this.likesCount = likesCount;
         this.tags = tags;
-        this.commentsSize = commentsSize;
+        this.comments = new Comment[commentsSize];
     }
 
     public Post(String title, String text, byte[] image, String tags) {
@@ -64,19 +63,15 @@ public class Post {
     }
 
     public List<Comment> getComments() {
-        return comments;
+        return List.of(comments);
     }
 
     public int getCommentsSize() {
-        if (comments != null) {
-            return comments.size();
-        } else {
-            return commentsSize;
-        }
+        return comments.length;
     }
 
     public void setComments(List<Comment> comments) {
-        this.comments = comments;
+        this.comments = comments.toArray(new Comment[0]);
     }
 
     public String[] getTags() {

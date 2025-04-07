@@ -84,7 +84,6 @@ public class JdbcNativePostRepository implements PostRepository {
 
     @Override
     public void editPost(long id, Post updatedPost) {
-        //TODO refactor
         if (updatedPost.getImage().length > 0) {
             jdbcTemplate.update("update posts " +
                             "set title = ?, post_text = ?, tags = ?, image = ? " +
@@ -121,11 +120,5 @@ public class JdbcNativePostRepository implements PostRepository {
                 String.format("select image from posts " +
                         "where id ='%s'", id),
                 (rs, rowNum) -> rs.getBytes("image")).getFirst();
-    }
-
-    @Override
-    public List<Post> findPostsByTag(String search) {
-        //TODO
-        return List.of();
     }
 }

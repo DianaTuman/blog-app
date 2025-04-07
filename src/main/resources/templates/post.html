@@ -70,7 +70,7 @@
                 <button name="like" value="true">&#x1F44D;</button>
                 <span th:text="${post.getLikesCount()}"></span>
                 <button name="like" value="false">&#128078;</button>
-                <span th:text="${'комментарии '+post.getComments().size()}" style="float:right;"></span>
+                <span th:text="${'комментарии '+post.getCommentsSize()}" style="float:right;"></span>
             </form>
             </p>
             <p>

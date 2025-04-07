@@ -19,6 +19,4 @@ public interface PostRepository {
     void updateLikes(long id, int likes);
 
     byte[] getImage(long id);
-
-    List<Post> findPostsByTag(String search);
 }
