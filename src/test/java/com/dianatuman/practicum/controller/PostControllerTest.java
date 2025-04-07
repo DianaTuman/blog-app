@@ -1,16 +1,14 @@
 package com.dianatuman.practicum.controller;
 
-import com.dianatuman.practicum.configuration.DataSourceConfiguration;
-import com.dianatuman.practicum.configuration.WebConfiguration;
+import com.dianatuman.practicum.BlogAppApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,8 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringJUnitWebConfig({DataSourceConfiguration.class, WebConfiguration.class})
-@TestPropertySource("classpath:application.properties")
+@SpringBootTest(classes = BlogAppApplication.class)
 public class PostControllerTest {
 
     @Autowired

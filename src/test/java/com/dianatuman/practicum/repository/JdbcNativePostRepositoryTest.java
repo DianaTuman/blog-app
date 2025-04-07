@@ -1,21 +1,19 @@
 package com.dianatuman.practicum.repository;
 
-import com.dianatuman.practicum.configuration.DataSourceConfiguration;
+import com.dianatuman.practicum.BlogAppApplication;
 import com.dianatuman.practicum.model.Post;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringJUnitConfig({DataSourceConfiguration.class, JdbcNativePostRepository.class})
-@TestPropertySource("classpath:application.properties")
+@SpringBootTest(classes = BlogAppApplication.class)
 public class JdbcNativePostRepositoryTest {
 
     @Autowired
