@@ -1,6 +1,6 @@
 package com.dianatuman.practicum.repository;
 
-import com.dianatuman.practicum.BlogAppApplication;
+import com.dianatuman.practicum.configuration.TestDataSourceConfiguration;
 import com.dianatuman.practicum.model.Comment;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,13 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = BlogAppApplication.class)
+@SpringBootTest(classes = TestDataSourceConfiguration.class)
 public class JdbcNativeCommentRepositoryTest {
 
     @Autowired
@@ -27,13 +26,13 @@ public class JdbcNativeCommentRepositoryTest {
     void setUp() {
         jdbcTemplate.execute("DELETE FROM comments");
         jdbcTemplate.execute("DELETE FROM posts");
-        jdbcTemplate.execute("insert into posts(id, title, post_text) values ('1', 'FIRST POST', 'FIRST TEXT')");
-        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (1, 1, 'FIRST COMMENT')");
+        jdbcTemplate.execute("insert into posts(id, title, post_text) values (100, 'FIRST POST', 'FIRST TEXT')");
+        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (100, 100, 'FIRST COMMENT')");
     }
 
     @Test
     void add_shouldSaveCommentInDatabase() {
-        long id = commentRepository.addComment(1, "TESTCOMMENT_ADD");
+        long id = commentRepository.addComment(100, "TESTCOMMENT_ADD");
         assertNotEquals(0, id);
 
         var comments = getAllComments();
@@ -48,11 +47,11 @@ public class JdbcNativeCommentRepositoryTest {
 
     @Test
     void edit_shouldUpdateCommentInDatabase() {
-        commentRepository.editComment(1, "EDITED_TEXT");
+        commentRepository.editComment(100, "EDITED_TEXT");
 
         var comments = getAllComments();
         Comment editedComment = comments.stream()
-                .filter(c -> c.getId() == 1)
+                .filter(c -> c.getId() == 100)
                 .findFirst()
                 .orElse(null);
 
@@ -62,7 +61,7 @@ public class JdbcNativeCommentRepositoryTest {
 
     @Test
     void delete_shouldDeleteCommentInDatabase() {
-        commentRepository.deleteComment(1);
+        commentRepository.deleteComment(100);
 
         var comments = getAllComments();
         Comment deletedComment = comments.stream()

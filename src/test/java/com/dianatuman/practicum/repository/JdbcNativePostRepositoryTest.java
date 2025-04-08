@@ -1,6 +1,6 @@
 package com.dianatuman.practicum.repository;
 
-import com.dianatuman.practicum.BlogAppApplication;
+import com.dianatuman.practicum.configuration.TestDataSourceConfiguration;
 import com.dianatuman.practicum.model.Post;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = BlogAppApplication.class)
+@SpringBootTest(classes = TestDataSourceConfiguration.class)
 public class JdbcNativePostRepositoryTest {
 
     @Autowired
@@ -22,14 +22,14 @@ public class JdbcNativePostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
 
-    private final long id = 1;
+    private final long id = 100;
 
     @BeforeEach
     void setUp() {
         jdbcTemplate.execute("DELETE FROM comments");
         jdbcTemplate.execute("DELETE FROM posts");
-        jdbcTemplate.execute("insert into posts(id, title, post_text) values ('1', 'FIRST POST', 'FIRST TEXT')");
-        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (1, 1, 'FIRST COMMENT')");
+        jdbcTemplate.execute("insert into posts(id, title, post_text) values (100, 'FIRST POST', 'FIRST TEXT')");
+        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (100, 100, 'FIRST COMMENT')");
     }
 
     @Test
