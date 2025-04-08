@@ -35,7 +35,7 @@ public class FeedController {
     @GetMapping
     public String feedPage(Model model, @RequestParam(value = "search", defaultValue = "") String search,
                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                           @RequestParam(name = "pageNumber", defaultValue = "1") Integer pageNumber) {
+                           @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber) {
         List<Post> posts;
         if (search.isBlank()) {
             posts = postService.getPosts();

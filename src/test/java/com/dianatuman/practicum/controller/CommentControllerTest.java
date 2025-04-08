@@ -1,40 +1,26 @@
 package com.dianatuman.practicum.controller;
 
-import com.dianatuman.practicum.BlogAppApplication;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.dianatuman.practicum.service.CommentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = BlogAppApplication.class)
+@WebMvcTest(controllers = CommentController.class)
 public class CommentControllerTest {
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-        jdbcTemplate.execute("DELETE FROM comments");
-        jdbcTemplate.execute("DELETE FROM posts");
-        jdbcTemplate.execute("insert into posts(id, title, post_text) values ('1', 'FIRST POST', 'FIRST TEXT')");
-        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (1, 1, 'FIRST COMMENT')");
-    }
+    @MockitoBean
+    private CommentService commentService;
 
     @Test
     public void postComments_shouldAddCommentAndRedirect() throws Exception {
@@ -42,6 +28,8 @@ public class CommentControllerTest {
                         .param("text", "TESTCOMMENT_ADD"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/posts/1"));
+
+        verify(commentService, times(1)).addComment(1, "TESTCOMMENT_ADD");
     }
 
     @Test
@@ -50,6 +38,8 @@ public class CommentControllerTest {
                         .param("text", "EDITED_TESTCOMMENT1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/posts/1"));
+
+        verify(commentService, times(1)).editComment(1, "EDITED_TESTCOMMENT1");
     }
 
     @Test
@@ -57,11 +47,8 @@ public class CommentControllerTest {
         mockMvc.perform(post("/posts/1/comments/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/posts/1"));
-    }
 
-    @AfterEach
-    void cleanUp() {
-        jdbcTemplate.execute("DELETE FROM comments");
-        jdbcTemplate.execute("DELETE FROM posts");
+        verify(commentService, times(1)).deleteComment(1);
+
     }
 }
