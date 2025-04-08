@@ -6,9 +6,9 @@ Blog-like application created using Spring Boot. Homework for the Java developer
 Environment variables **'DB_USER'** and **'DB_PASS'** must be set for accessing database and schema named **practicum** must exist in database.
 
 ### **Commands to run this application:**
-* **gradle bootJar** java -jar myapp.jar
-* **gradle bootRun**
-* **gradle bootTestRun**
+* **gradle bootJar** to create a jar, that can be later used with command **java -jar myapp.jar**
+* **gradle bootRun** to run application
+* **gradle bootTestRun** to run tests and then application
 
 ### Versions of software used in the development:
 * Java JDK 21

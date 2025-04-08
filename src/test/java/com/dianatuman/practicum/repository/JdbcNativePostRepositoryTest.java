@@ -1,36 +1,19 @@
 package com.dianatuman.practicum.repository;
 
-import com.dianatuman.practicum.configuration.TestDataSourceConfiguration;
 import com.dianatuman.practicum.model.Post;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = TestDataSourceConfiguration.class)
-public class JdbcNativePostRepositoryTest {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class JdbcNativePostRepositoryTest extends JdbcNativeRepositoryTest {
 
     @Autowired
     private PostRepository postRepository;
 
     private final long id = 100;
-
-    @BeforeEach
-    void setUp() {
-        jdbcTemplate.execute("DELETE FROM comments");
-        jdbcTemplate.execute("DELETE FROM posts");
-        jdbcTemplate.execute("insert into posts(id, title, post_text) values (100, 'FIRST POST', 'FIRST TEXT')");
-        jdbcTemplate.execute("INSERT INTO comments (id, post_id, text) VALUES (100, 100, 'FIRST COMMENT')");
-    }
 
     @Test
     void findAll_shouldReturnAllPosts() {
@@ -99,11 +82,5 @@ public class JdbcNativePostRepositoryTest {
 
         postRepository.updateLikes(id, 100);
         assertEquals(99, postRepository.getPost(id).getLikesCount());
-    }
-
-    @AfterEach
-    void cleanUp() {
-        jdbcTemplate.execute("DELETE FROM comments");
-        jdbcTemplate.execute("DELETE FROM posts");
     }
 }
