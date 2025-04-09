@@ -16,6 +16,9 @@ public class JdbcNativeRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    protected final long postId = 100;
+    protected final long commentId = 100;
+
     @BeforeEach
     void setUp() {
         jdbcTemplate.execute("DELETE FROM comments");

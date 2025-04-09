@@ -49,6 +49,5 @@ public class CommentControllerTest {
                 .andExpect(redirectedUrl("/posts/1"));
 
         verify(commentService, times(1)).deleteComment(1);
-
     }
 }

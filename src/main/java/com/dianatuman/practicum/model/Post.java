@@ -112,6 +112,6 @@ public class Post {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, text, likesCount, comments, tags, Arrays.hashCode(image));
+        return Objects.hash(id, title, text, likesCount, Arrays.hashCode(comments), tags, Arrays.hashCode(image));
     }
 }

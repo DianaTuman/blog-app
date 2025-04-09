@@ -8,7 +8,7 @@ Environment variables **'DB_USER'** and **'DB_PASS'** must be set for accessing 
 ### **Commands to run this application:**
 * **gradle bootJar** to create a jar, that can be later used with command **java -jar myapp.jar**
 * **gradle bootRun** to run application
-* **gradle bootTestRun** to run tests and then application
+* **gradle test** to run tests
 
 ### Versions of software used in the development:
 * Java JDK 21

@@ -4,7 +4,7 @@ import com.dianatuman.practicum.model.Comment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class JdbcNativeCommentRepositoryTest extends JdbcNativeRepositoryTest {
 
@@ -13,8 +13,8 @@ public class JdbcNativeCommentRepositoryTest extends JdbcNativeRepositoryTest {
 
     @Test
     void add_shouldSaveCommentInDatabase() {
-        long id = commentRepository.addComment(100, "TESTCOMMENT_ADD");
-        assertNotEquals(0, id);
+        long id = commentRepository.addComment(postId, "TESTCOMMENT_ADD");
+        assertThat(id).isNotZero();
 
         var comments = getAllComments();
         Comment addedComment = comments.stream()
@@ -22,35 +22,35 @@ public class JdbcNativeCommentRepositoryTest extends JdbcNativeRepositoryTest {
                 .findFirst()
                 .orElse(null);
 
-        assertNotNull(addedComment);
-        assertEquals("TESTCOMMENT_ADD", addedComment.getText());
+        assertThat(addedComment).isNotNull();
+        assertThat(addedComment.getText()).isEqualTo("TESTCOMMENT_ADD");
     }
 
     @Test
     void edit_shouldUpdateCommentInDatabase() {
-        commentRepository.editComment(100, "EDITED_TEXT");
+        commentRepository.editComment(commentId, "EDITED_TEXT");
 
         var comments = getAllComments();
         Comment editedComment = comments.stream()
-                .filter(c -> c.getId() == 100)
+                .filter(c -> c.getId() == commentId)
                 .findFirst()
                 .orElse(null);
 
-        assertNotNull(editedComment);
-        assertEquals("EDITED_TEXT", editedComment.getText());
+        assertThat(editedComment).isNotNull();
+        assertThat(editedComment.getText()).isEqualTo("EDITED_TEXT");
     }
 
     @Test
     void delete_shouldDeleteCommentInDatabase() {
-        commentRepository.deleteComment(100);
+        commentRepository.deleteComment(commentId);
 
         var comments = getAllComments();
         Comment deletedComment = comments.stream()
-                .filter(c -> c.getId() == 1)
+                .filter(c -> c.getId() == commentId)
                 .findFirst()
                 .orElse(null);
 
-        assertNull(deletedComment);
+        assertThat(deletedComment).isNull();
     }
 
 }
