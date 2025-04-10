@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 @SpringBootTest(classes = TestDataSourceConfiguration.class)
-public class JdbcNativeRepositoryTest {
+public abstract class JdbcNativeRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
